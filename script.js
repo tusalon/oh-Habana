@@ -1,4 +1,15 @@
-const totalPages = 9;
+const sections = [
+  "Portada",
+  "Info",
+  "Entrantes",
+  "Pastas",
+  "Del mar",
+  "Carnes",
+  "Arroces",
+  "Bar",
+  "Cafes",
+];
+const totalPages = sections.length;
 let currentPage = 1;
 
 const pageStack = document.querySelector("#pageStack");
@@ -7,7 +18,7 @@ const pageTotal = document.querySelector("#pageTotal");
 const prevBtn = document.querySelector("#prevBtn");
 const nextBtn = document.querySelector("#nextBtn");
 const thumbs = document.querySelector("#thumbs");
-const assetVersion = "20260614-3";
+const assetVersion = "20260614-4";
 
 pageTotal.textContent = String(totalPages);
 
@@ -29,7 +40,7 @@ function renderPages() {
     image.className = "menu-page";
     image.dataset.page = String(page);
     image.src = pagePath(page);
-    image.alt = `Pagina ${page} del menu OH Habana`;
+    image.alt = `${sections[page - 1]} - menu OH Habana`;
     image.loading = page === 1 ? "eager" : "lazy";
     image.decoding = "async";
     pageStack.append(image);
@@ -42,14 +53,14 @@ function renderThumbs() {
     button.className = "thumb";
     button.type = "button";
     button.dataset.page = String(page);
-    button.setAttribute("aria-label", `Abrir pagina ${page}`);
+    button.setAttribute("aria-label", `Abrir ${sections[page - 1]}`);
 
     const image = document.createElement("img");
     image.src = thumbPath(page);
     image.alt = "";
 
     const label = document.createElement("span");
-    label.textContent = `Pagina ${page}`;
+    label.textContent = sections[page - 1];
 
     button.append(image, label);
     button.addEventListener("click", () => setPage(page));
