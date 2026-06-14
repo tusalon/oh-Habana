@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>OH Habana - Menú</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <aside class="rail" aria-label="Páginas del menú">
+        <div class="brand">
+          <span>OH</span>
+          <strong>Habana</strong>
+        </div>
+        <nav id="thumbs" class="thumbs"></nav>
+      </aside>
+
+      <section class="viewer" aria-label="Menú digital">
+        <div class="topbar">
+          <button id="prevBtn" class="icon-btn" aria-label="Página anterior" title="Página anterior">
+            <span aria-hidden="true">‹</span>
+          </button>
+          <div class="counter">
+            <span id="pageNow">1</span>
+            <span>/</span>
+            <span id="pageTotal">9</span>
+          </div>
+          <button id="nextBtn" class="icon-btn" aria-label="Página siguiente" title="Página siguiente">
+            <span aria-hidden="true">›</span>
+          </button>
+        </div>
+
+        <div class="agenda">
+          <div class="rings" aria-hidden="true"></div>
+          <img id="menuPage" alt="Página del menú OH Habana" src="assets/pages/page-01.jpg" />
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
