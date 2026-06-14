@@ -7,15 +7,22 @@ const pageTotal = document.querySelector("#pageTotal");
 const prevBtn = document.querySelector("#prevBtn");
 const nextBtn = document.querySelector("#nextBtn");
 const thumbs = document.querySelector("#thumbs");
+const assetVersion = "20260614-2";
+const loadedPages = new Set();
+let requestId = 0;
 
 pageTotal.textContent = String(totalPages);
 
+function versioned(path) {
+  return `${path}?v=${assetVersion}`;
+}
+
 function pagePath(page) {
-  return `assets/pages/page-${String(page).padStart(2, "0")}.jpg`;
+  return versioned(`assets/pages/page-${String(page).padStart(2, "0")}.jpg`);
 }
 
 function thumbPath(page) {
-  return `assets/thumbs/page-${String(page).padStart(2, "0")}.jpg`;
+  return versioned(`assets/thumbs/page-${String(page).padStart(2, "0")}.jpg`);
 }
 
 function renderThumbs() {
@@ -24,14 +31,14 @@ function renderThumbs() {
     button.className = "thumb";
     button.type = "button";
     button.dataset.page = String(page);
-    button.setAttribute("aria-label", `Abrir página ${page}`);
+    button.setAttribute("aria-label", `Abrir pagina ${page}`);
 
     const image = document.createElement("img");
     image.src = thumbPath(page);
     image.alt = "";
 
     const label = document.createElement("span");
-    label.textContent = `Página ${page}`;
+    label.textContent = `Pagina ${page}`;
 
     button.append(image, label);
     button.addEventListener("click", () => setPage(page));
@@ -39,10 +46,7 @@ function renderThumbs() {
   }
 }
 
-function setPage(page) {
-  currentPage = Math.min(totalPages, Math.max(1, page));
-  pageImage.src = pagePath(currentPage);
-  pageImage.alt = `Página ${currentPage} del menú OH Habana`;
+function updateControls() {
   pageNow.textContent = String(currentPage);
   prevBtn.disabled = currentPage === 1;
   nextBtn.disabled = currentPage === totalPages;
@@ -50,6 +54,31 @@ function setPage(page) {
   document.querySelectorAll(".thumb").forEach((thumb) => {
     thumb.setAttribute("aria-current", thumb.dataset.page === String(currentPage) ? "true" : "false");
   });
+}
+
+function setPage(page) {
+  currentPage = Math.min(totalPages, Math.max(1, page));
+  const nextPage = currentPage;
+  const nextSrc = pagePath(nextPage);
+  const thisRequest = requestId + 1;
+
+  requestId = thisRequest;
+  updateControls();
+  pageImage.style.opacity = loadedPages.has(nextPage) ? "1" : "0.45";
+
+  const nextImage = new Image();
+  nextImage.onload = () => {
+    if (thisRequest !== requestId) return;
+    loadedPages.add(nextPage);
+    pageImage.src = nextSrc;
+    pageImage.alt = `Pagina ${nextPage} del menu OH Habana`;
+    pageImage.style.opacity = "1";
+  };
+  nextImage.onerror = () => {
+    if (thisRequest !== requestId) return;
+    pageImage.style.opacity = "1";
+  };
+  nextImage.src = nextSrc;
 }
 
 prevBtn.addEventListener("click", () => setPage(currentPage - 1));
