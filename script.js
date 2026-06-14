@@ -1,6 +1,5 @@
 const sections = [
   "Portada",
-  "Info",
   "Entrantes",
   "Pastas",
   "Del mar",
@@ -8,6 +7,7 @@ const sections = [
   "Arroces",
   "Bar",
   "Cafes",
+  "Contraportada",
 ];
 const totalPages = sections.length;
 let currentPage = 1;
@@ -18,7 +18,7 @@ const pageTotal = document.querySelector("#pageTotal");
 const prevBtn = document.querySelector("#prevBtn");
 const nextBtn = document.querySelector("#nextBtn");
 const thumbs = document.querySelector("#thumbs");
-const assetVersion = "20260614-4";
+const assetVersion = "20260614-5";
 
 pageTotal.textContent = String(totalPages);
 
